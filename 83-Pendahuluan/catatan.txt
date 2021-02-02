@@ -1,0 +1,15 @@
+Sebelum belajar materi ini harus mempelajari terlebih dahulu materi dibawah ini
+1. Go-Lang Dasar (https://github.com/rsyd29/belajar-golang-dasar.git)
+2. Go-Lang Modules (https://github.com/rsyd29/belajar-golang-modules.git)
+3. Go-Lang Unit Test (https://github.com/rsyd29/belajar-golang-unit-test.git)
+
+Agenda Go-Lang Goroutine
+1. Concurrency & Parallel Programming
+2. Goroutines
+3. Channel
+4. Buffered Channel
+5. Mutex
+6. WaitGroup
+7. Atomic
+8. Ticker
+9. Dan lain-lain
