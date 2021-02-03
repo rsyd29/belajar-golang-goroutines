@@ -1,0 +1,93 @@
+Pengenalan Concurrency dan Parallel Programming
+
+jadi kita harus mengetahui dari ke dua istilah di atas yaitu Concurrency dan Parallel
+Programming, dua hal di atas adalah berbeda
+
+Pengenalan Parallel Programming
+1. Saat ini kita hidup di era multicore, di mana jarang sekali kita menggunakan prosesor yang
+single core.
+Jadi bukan hanya komputer saja yang multicore, handphone iOS dan Android saja sudah multicore.
+Corenya lebih dari satu disebut multi core.
+2. Semakin canggih perangkat keras, maka software pun akan mengikuti, dimana sekarang kita
+bisa dengan mnudah membuat proses parallel di aplikasi.
+Perkembangan hardware itu mengikuti perkembangan software yang begitu canggih. Proses parallel
+di aplikasi sudah banyak sekali kenapa karena perangkat keras sudah mendungkung.
+3. Parallel programming sederhananya adalah memecahkan suatu masalah dengan cara membaginya
+menjadi yang lebih kecil, dan dijalankan secara bersamaan pada waktu yang bersamaan pula.
+Apabila ada tugas 10 dan orangnya 10 maka itu sekaligus dikerjakan bersama-sama tanpa harus
+menunggu lagi dalam waktu bersamaan. Jadi anggapnya orang yang melakukan tugas itu adalah
+prosesornya dan tugas-tugasnya adalah pekerjaannya. Jadi parallel programming adalah
+mengerjakan tugas secara sekaligus dan semuanya bersamaan.
+
+Contoh Parallel Programming
+1. Menjalankan beberapa aplikasi sekaligus di sistem operasi kita (office, editor, browser,
+dan lain-lain).
+Jadi aplikasi itu bisa dijalankan secara bersamaan.
+2. Beberapa koki menyiapkan makanan di restoran, dimana tiap koki membuat makanan masing2.
+3. Antrian di Bank, dimana tiap teller melayani nasabahnya masing-masing.
+
+Process vs Thread (saling berhubungan)
+1. Process adalah sebuah eksekusi program | Thread alah segmen dari process
+- Setiap aplikasi (editor, chrome, spotify, dll) yang dijalankan itu adalah proses
+- Thread adalah bagian dari proses, contohnya seperti membuka google chrome dan buka beberapa tab, maka tab tersebut adalah thread.
+Jadi proses itu ada banyak sekali thread.
+2. Process mengkonsumsi memory besar | Thread menggunakan memory kecil
+- Process itu terbatas, tergantung dari memory RAM yang dipunya.
+- Thread, ketika google chrome maka akan memakan memory yang sedikit. Walaupun membuka thread yang banyak.
+3. Process saling terisolasi dengan process lain | Thread bisa saling berhubungan jika dalam process yang sama.
+- Ketika membua google chrome, kita tidak akan berhubungan langsung dengan microsoft word, jadi processnya itu berbeda, karena terisolasi dengan alamat memory yang berbeda.
+- Thread itu saling berhubungan, jadi kita bisa mengirimkan data dari thread ke thread lain, contohnya membuat aplikasi golang yang dapat mengirimkan dari thread ke thread lain.
+4. Process lama untuk dijalankan dihentikan | Thread cepat untuk dijalankan dan dihentikan.
+- Contohnya apabila membuat adobe photoshop, itu kalau dibuka proses membuka aplikasinya begitu lama.
+- Contohnya tab pada google chrome, cepat untuk dijalankan dan dihentikannya, seperti membuka tab beberapa banyak sekalipun.
+
+Parallel vs Concurrency
+1. Berbeda dengan parallel (menjalankan beberapa pekerjaan secara bersamaan), concurrency
+adalah menjalankan beberapa pekerjaan secara bergantian (akan tetapi waktunya tidak bersamaan).
+2. Dalam parallel kita biasanya membutuhkan banyak thread, sedangkan dalan concurrency, kita
+hanya membutuhkan sedikit thread.
+
+Diagram Parallel
+Biasanya ada 2 thread/process, 2 thread/process itu ada waktu dimana jalannya bersamaan,
+Jadi 2 proses atau lebih yang jalannya berbarengan dan pada waktu bersamaan.
+
+Diagaram Concurrency
+Jadi ada 1 process, dimana dia bergonta-ganti pekerjaannya, misal melakukan A dan pindah ke B
+setelah itu ke A lagi lalu ke C dan seterusnya. Contohnya manusia.
+
+Golang itu bukan parallel programming, secara default dia adalah concurrency programming.
+Tapi karena kita sekarang running aplikasi Go-Lang menggunakan multi core jadi sebenarnya
+dia campuran antara parallel dan concurrency programming.
+
+Contoh Concurrency
+1. Saat kita makan di cafe, kita bisa makan, lalu bicara, lalu minum, makan lagi, bicara lagi,
+minum lagi, dan sebagainya. Tetapi kita tidak bisa pada saat yang bersamaan minum, makan dan
+bicara, hanya bisa melakukan satu hal pada satu waktu, namun bisa berganti kapanpun kita mau.
+Tidak mungkin kita melakukan 2 kegiatan sekaligus. Kita hanya bisa melakukan 1 kegiatan saja.
+Akan tetapi kita bisa gonta-ganti kegiatan tersebut itu.
+
+CPU-Bound
+1. Banyak algoritma dibuat yang hanya membutuhkan CPU untuk menjalankannya. Algoritma jenis
+ini biasanya sangat tergantung dengan kecepatan CPU.
+2. Contoh yang paling populer adalah Machine Learning, oleh karena itu sekarang banyak sekali
+teknologi Machine Learning yang menggunakan GPU karena memiliki core yang lebih banyak
+dibanding CPU biasanya.
+3. Jenis algoritma seperti ini tidak ada benefitnya menggunakan Concurrency Programming, namun
+bisa dibantu dengan implementasi Parallel Programming.
+Jadi apabila ingin membuat suatu aplikasi yang memanfaatkan CPU-Bound seperti machine learning,
+maka jangan menggunakan bahasa pemrograman Go-Lang, melainkan Python atau sejenisnya yang basisnya
+adalah CPU-Bound.
+
+I/O-Bound
+1. I/O-Bound adalah kebalikan dari sebelumnya, dimana biasanya algoritma atau aplikasinya
+sangat tergantung dengan kecepatan input output devices yang digunakan.
+2. Contohnya aplikasi seperti membaca data dari file, database, API dan lain-lain.
+3. Kebanyakan saat ini, biasanya kita akan membuat aplikasi jenis seperti ini.
+Contohnya web developer, backend developer.
+4. Aplikasi jenis I/O-Bound, walaupun bisa terbantu dengan implementasi Parallel Programming,
+tapi benefitnya akan lebih baik jika menggunakan Concurrency Programming.
+5. Bayangkan kita membaca data dari database, dan thread harus menunggu 1 detik untuk mendapat
+balasan dari database, padahal waktu 1 detik itu jika menggunakan Concurrency Programming,
+bisa digunakan untuk melakukan hal lain lagi.
+Daripada menunggu 1 proses lebih baik menjalankan proses yang lainnya. Itulah Concurrency
+Programming.
