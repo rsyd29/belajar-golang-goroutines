@@ -1,0 +1,5 @@
+Membuat Project Golang Goroutines
+1. Buat folder latihan-belajar-golang-goroutines
+2. Buat module : go mod init latihan-belajar-golang-goroutines
+
+pastikan belajar terlebih dahulu tentang golang modules dan golang unit test
