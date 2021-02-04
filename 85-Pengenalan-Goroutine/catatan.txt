@@ -1,0 +1,56 @@
+Pengenalan Goroutine
+1. Goroutine adalah sebuah thread ringan yang dikelola oleh Go Runtime.
+Sebenernya bukan thread sih, tapi agak susah disebutnya. Jadi go routine itu running
+di dalam thread. Jadi agar lebih mudah maka disebut thread ringan.
+2. Ukuran Goroutine sangat kecil, sekita 2kb, jauh lebih kecil dibandingkan Thread yang
+bisa sampai 1mb atau 1000kb.
+Karena ukurannya kecil sekali maka disebutnya thread ringan.
+3. Namun tidak seperti thread yang berjalan parallel, goroutine berjalan secara concurrent.
+Seperti sebelumnya dibilang bahwa golang itu berjalan secara concurrency bukan parallel.
+Kalau thread itu parallel dia akan berjalan secara bersamaan, sedangkan goroutine itu tdk.
+Jadi goroutine itu berjalan secara concurrent di dalam thread.
+
+Cara Kerja Goroutine
+1. Sebenernya, Goroutine dijalankan oleh Go Scheduler dalam thread, dimana jumlah threadnya
+sebanyak GOMAXPROCS (biasanya sejumlah core CPU).
+2. Jadi sebenarnya tidak bisa dibilang Goroutine itu pengganti Thread, karena Goroutine
+sendiri berjalan di atas Thread.
+3. Namun yang mempermudah kita adalah, kita tidak perlu melakukan manajemen Thread secara
+manual, semua sudah diatur oleh Go Scheduler.
+
+dalam Go Scheduler, kita akan mengenal beberapa terminologo
+- G: Goroutine
+- M: Thread (Machine)
+- P: Processor
+
+Jadi ada 2 Processor, dimana masing masing processor memili thread
+Processor 1 terdapat 2 thread, dan processor 2 terdapat 2 thread pula.
+Selanjutnya terdapat antrian diantaranya local dan global queue.
+Masing-masing processor memiliki local queue.
+Sedangkan global queue adalah bisa dimiliki oleh 2 processor.
+
+Jadi setiap membuat goroutine maka dia akan masuk ke dalam antriannya.
+Tergantung masuk ke dalam local atau global queue, itu diatur oleh go scheduler, tidak perlu memikirkan lagi.
+
+Jadi ketika kita menjalankan goroutine itu tidak langsung dijalankan melainkan masuk
+ke dalam antrian. Apa yang terjadi, maka thread akan mengambil goroutine yang ada pada
+local ataupun global queue. Biasanya ambil dari local terlebih dahulu baru global. Jika
+tidak ada keduanya maka dia akan mencuri (stilling) ke processor lain. Istilahnya membantu processor
+lain apabila processor tersebut sibuk.
+
+Itulah konsep dari goroutine yang bekerja di go scheduler.
+Cerita diatas bahwa dia running secara parallel, lantas concurrentnya bagaimana? jadi,
+apabila ada goroutine yang ada pada antrian lalu diambil oleh thread yang ada pada
+processor 1, lalu ketika dieksekusi lama maka ketika lama dia akan diskip go routinenya.
+Dia akan di suspend atau pause dan dikembalikan ke antrian dan mengambil goroutine yang
+lain. Kalau itu sudah selesai maka ambil lagi goroutine yang lambat. Kalau masih blm selesai
+maka akan dikembalikan lagi.
+
+Jadi apabila ada proses goroutine yang panjang, maka dia tidak akan block goroutine yang
+lain untuk berjalan, karena golang itu sudah pintar yaitu go schedulernya, jadi apabila ada
+goroutine yang lambat sekali prosesnya dia akan stop dan dia akan dimasukkan ke dalam antrian
+dan dia akan mengambil goroutine yang lain.
+
+Jadi goroutine itu di jalankan secara concurrent, apabila goroutine 1 itu belum selesai,
+maka pindah ke goroutine 2 dan goroutine 2 sudah selesai maka kembali lagi ke goroutine 1.
+Jadi proses dari goroutine bukan sequential (satu-satu sampai selesai) melainkan bergantian.
