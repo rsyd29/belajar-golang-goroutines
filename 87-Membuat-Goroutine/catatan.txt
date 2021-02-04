@@ -1,0 +1,28 @@
+Membuat Goroutine
+1. Untuk membuat goroutine di Golang sangatlah sederhana.
+Sudah built-in di dalam bahasa Golang, tanpa harus import library atau modules.
+2. Kita hanya cukup menambahkan perintah go sebelum memanggil function yang akan kita
+jalankan dalam goroutine.
+Tanpa harus menggunakan await seperti bahasa pemrograman lain seperti dart atau javascript.
+3. Saat sebuah function kita jalankan dalam goroutine, function tersebut akan berjalan
+secara asynchronous, artinya tidak akan ditunggu sampai function tersebut selesai.
+4. Aplikasi akan lanjut berjalan ke kode program selanjutnya tanpa menunggu goroutine yang
+kita buat selesai.
+
+Kode: Membuat Goroutine
+func RunHelloWorld() {
+    fmt.Println("Hello World")
+}
+
+func TestCreateGoroutine(t *testing.T) {
+    go RunHelloWorld()
+    fmt.Println("Ups")
+
+    time.Sleep(1 * time.Second)
+}
+
+Note: Problem apabila goruotine menjalankan sebuah function yang mengembalikan sebuah nilai.
+Walaupun bisa akan tetapi jadi tidak berguna, karena return valuenya tidak bisa ditangkap.
+
+Lihat latihannya ada di link berikut
+https://github.com/rsyd29/latihan-belajar-golang-goroutines.git
