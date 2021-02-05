@@ -1,0 +1,31 @@
+Goroutine Sangat Ringan
+1. Seperti yang sebelumnya dijelaskan, bahwa goroutine itu sangat ringan.
+2. Kita bisa membuat ribuan, bahkan sampai jutaan goroutine tanpa takut boros memory.
+3. Tidak seperti Thread yang ukurannya berat, goroutine sangatlah ringan.
+
+Kode: Membuat Banyak Goroutine -> Video 88
+func DisplayNumber(number int) {
+	fmt.Println("Display", number)
+}
+
+func TestManyGoroutine(t *testing.T) {
+	//for i := 0; i < 100000; i++{
+	//	DisplayNumber(i) // ini running tanpa goroutines sebanyak 100000 kali perulangan
+	//	/**
+	//	waktu output yang dihasilkan dan diurutkan secara ascending dan sequential
+	//	--- PASS: TestManyGoroutine (9.19s)
+	//	 */
+	//}
+
+	for i := 0; i < 100000; i++ {
+		go DisplayNumber(i) // ini running menggunakan goroutine sebanyak 100000 kali perulangan
+	}
+	time.Sleep(5 * time.Second) // dan akan sleep selama 5 detik
+	/**
+	Running tidak secara berurutan, karena laptop ini multicore maka dia tidak jalan secara
+	concurrent, melainkan juga secara parallel, maka dari itu angkanya tidak berurutan.
+	aritnya 100000 perulangan untuk goroutine kelar dalam waktu seperti itu. Lalu tidak ada
+	istilahnya memory overflow/out ouf memory.
+	--- PASS: TestManyGoroutine (6.01s)
+	 */
+}
