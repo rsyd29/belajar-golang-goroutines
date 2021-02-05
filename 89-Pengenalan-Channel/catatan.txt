@@ -1,0 +1,56 @@
+Goroutine itu apabila mempunya function dan mengembalikan nilai, maka return valuenya itu
+tidak bisa kita terima. Karena dia jalanya asynchronous. Bagaimana caranya itu kita dapat
+mengembalikan sebuah data dari goroutines. Jabannya adalah dengan menggunakan Channel.
+
+Pengenalan Channel
+1. Channel adalah tempat komunikasi secara synchronous yang bisa dilakukan oleh goroutine.
+Jadi apabila kita ingin mengirimkan data dari goroutine ke goroutine lain. Kita bisa
+menggunakan yang namanya Channel.
+2. Di channel terdapat pengirim dan penerima, biasanya pengirim dan penerima adalah goroutine
+yang berbeda.
+Jadi ini biasanya ada 2 goroutine, goroutine sebagai pengirim dan goroutine sebagai penerima.
+Jadi jarang sekali goroutine yang sama, pasti berbeda. Walaupun bisa tapi jarang, biasanya
+berbeda.
+3. Saat melakukan pengiriman data ke Channel, goroutine akan ter-block, sampai ada yang
+menerima data tersebut.
+Ter-block, artinya kita akan mengirimkan data ke dalam channel maka dia akan nge-block
+si channel tersebut. Jadi goroutinenya tidak akan jalan sampai data yang ada di Channel
+ada yang mengambilnya.
+4. Maka dari itu, channel disebut sebagai alat komunikasi synchronous (blocking).
+5. Channel cocok sekali sebagai alternatif seperti mekanisme async await yang terdapat
+di beberapa bahasa pemrograman lain seperti JavaScript ataupun Dart.
+
+Diagram Channel
+Jadi ada 2 goroutines, lalu terdapat sebuah channel yaitu tempat untuk mengirimkan data
+lalu ada 1 goroutine yang mengirim dan 1 goroutine yang menerima, jadi goroutine akan
+mengirim datanya ke dalam channel, lalu misal kalau blm ada yang menerima, begitu
+mengirim maka dia akan nge-block/diam sampai data yang ada di channel diambil. Selanjutnya,
+kalau sudah ada yang mengambil sama goroutine yang lain, maka channel itu baru lepas datanya.
+Jadi mengirim datanya itu baru selesai. Jadi kalau misalnya blm ada yang menerima data,
+maka data tersebut blm lepas dari channel. Jadi konsepnya seperti itu. Dan kita hanya bisa
+mengirim 1 data ke dalam channel. Misal kalau blm ada data di dalam Channel maka goroutine
+yang menerima akan menunggu sampai datanya sudah ada.
+
+Karakteristik Channel
+1. Secara default channel hanya bisa menampung satu data, jika kita ingin menambahkan
+data lagi.
+Jadi kalau kita memasukkan dua data sekaligus ke dalam channel itu tidak bisa. Jadi hanya
+bisa 1 dan harus menunggu data tersebut diambil, baru bisa memasukkan data yang lain.
+2. Channel hanya bisa menerima satu jenis data.
+Jadi pada saat membuat channel itu harus menentukan tipe datanya apa? jadi hanya bisa
+satu tipe data. Misal kalau bilangnya string maka channel tersebut hanya bisa string.
+Kalau mau menerima semua data maka membuat interface kosong saja. Cuman apabila ada
+goroutine yang mengambil data dari channel tersebut harus mengkonversi tipe data tersebut
+secara manual, dari interface kosong ke tipe data yang ditujunya.
+3. Channel bisa diambil dari lebih dari satu goroutine.
+Jadi pengirim data ke dalam channel itu bisa lebih dari satu goroutines. Jadi pada saat
+bersamaan yang diterima channel itu hanya satu goroutines terlebih dahulu. Jadi yang
+lainnya menunggu. Dan yang mengambilpun bisa mengambil data yang banyak, tapi ambilnya
+satu-satu sama goroutines.
+4. Channel harus di close jika tidak digunakan, atau bisa menyebabkan memory leak.
+Channelnya di close itu rekomendasinya, walaupun tidak maka akan terjadi memory leak,
+artinya channelnya akan menggantung terus di dalam memory, apabila tidak close channel
+tersebut. Jadi rekomendasinya di close channel tersebut, untuk mengetahui kalau channel
+tersebut sudah tidak digunakan lagi. Jadi apabila sudah diclose maka akan ditolak apabila
+ingin menerimanya dan apabila ingin mengambil data tersebut dari channel yang sudah diclose.
+Jadi bisa dihapus menggunakan garbage collection-nya si goruntime ini.
