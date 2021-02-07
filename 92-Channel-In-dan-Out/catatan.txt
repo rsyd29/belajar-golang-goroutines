@@ -1,0 +1,49 @@
+Channel In dan Out
+1. Saat kita mengirim channel sebagai parameter, isi function tersebut bisa mengirim
+dan menerima data dari channel tersebut.
+Jadi yang namanya channel itu bisa mengirim data atau menerima data dari channel. By default
+kalau mengirim channel sebagai parameter maka function tersebut yaitu yang menerima
+sebagai parameter, dia bisa mengirim dan menerima datanya.
+2. Kadang kita ingin memberi tahu terhadapt function, misal bahwa channel tersebut hanya
+digunakan untuk mengirim data, atau hanya dapat digunakan untuk menerima data.
+3. Hal ini bisa kita lakukan di parameter dengan cara menandai apakah channe ini digunakan
+untuk in (mengirim data) dan out (menerima data).
+
+/**
+ini hanya boleh mengirim channel dengan menambahkan <- setelah chan
+contoh func OnlyIn
+ */
+func OnlyIn(channel chan<- string) {
+	time.Sleep(2 * time.Second) // artinya akan sleep selama 2 detik
+	channel <- "Budiman Rasyid Zainuddin" // ini mengirim data ke dalam channel
+	// data := <- channel // error: receive from send-only type chan<- string
+}
+
+/**
+ini hanya boleh menerima channel dengan menambahkan <- sebelum chan
+contoh func OnlyOut
+*/
+func OnlyOut(channel <-chan string) {
+	// channel <- "Budiman Rasyid Zainuddin" // error: channel <- "Budiman Rasyid Zainuddin" (send to receive-only type <-chan string
+	data := <- channel // ini untuk menerima data dari channel ke dalam var data
+	fmt.Println(data) // untuk menampilkan isi data tersebut
+}
+
+// membuat testing
+func TestInOutChannel(t *testing.T) {
+	channel := make(chan string) // membuat channel dengan tipe data string, lalu dimasukkan ke dalam var channel
+	defer close(channel) // untuk close channel
+
+	go OnlyIn(channel) // menjalankan goroutine untuk function OnlyIn dengan parameter channel
+	go OnlyOut(channel) // menjalankan goroutine untuk function OnlyOut dengan parameter channel
+
+	time.Sleep(5 * time.Second) // untuk sleep selama 5 detik
+}
+
+/**
+Note:
+Jadi apabila kita paksa apabila kita memasukkan ke dalam function OnlyIn
+dimana function tersebut memiliki parameter in, lalu kita masukkan
+data := <- channel yang artinya itu untuk menerima data yang seharusnya hanya bisa
+pada function OnlyOut maka akan terjadi Error, dan sebaliknya.
+ */
