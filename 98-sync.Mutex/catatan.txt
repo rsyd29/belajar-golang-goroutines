@@ -1,0 +1,51 @@
+sync.Mutex
+Mutex (Mutual Exclusion)
+1. Untuk mengatasi masalah race condition tersebut. Di Go-Lang terdapat sebuah struct bernama sync.Mutex.
+Jadi mutex terdapat pada package sync.
+2. Mutex bisa digunakan untuk melakukan locking dan unlocking, dimana ketika kita melakukan locking terhadap mutex, maka
+tidak ada yang bisa melakukan locking lagi sampai kita melakukan unlock.
+Jadi mutex itu mengunci sebuah blok code program, dan bisa juga melepas kuncinya. Biasanya di mutex, sebelum kita merubah
+variable yang disharing ke pada beberapa goroutine, maka kita perlu locking dengan menggunakan mutex. Artinya semua
+goroutine yang mau mengakses goroutine itu maka perlu locking lagi, jadi si mutex itu hanya memperbolehkan 1 goroutine
+yang akan melakukan locking. Setelah melakukan locking dan merubah variablenya maka kita harus unlock lagi. Setelah
+unlock maka locking akan terlepas, dan goroutine selanjutnya akan melakukan locking lagi. Jadi seakan akan membuat
+antrian terhadap si lockingnya.
+3. Dengan demikian, jika ada beberapa goroutine melakukan lock terhadap Mutex, maka hanya 1 goroutine yang diperbolehkan,
+setelah goroutine tersebut melakukan unlock, baru goroutine selanjutnya diperbolehkan melakukan lock lagi.
+Jadi harus satu per satu goroutine untuk melakukan locking.
+4. Ini sangat cocok sebagai solusi ketika ada masalah race condition yang sebelumnya kita hadapi.
+
+// sync.Mutex
+func TestMutex(t *testing.T) {
+	x := 0 // variable awal dengan nilai 0 yang diberi nama x
+	var mutex sync.Mutex // membuat variable mutex yang diambil dari package sync
+
+	for i := 1; i <= 1000; i++ { // melakukan perulangan sebanyak 1000
+		go func() { // membuat goroutine untuk anonymous function
+			for j := 1; j <= 100; j++ { // melakukan perulangan sebanyak 100
+				mutex.Lock() // membuat mutex Lock
+				x = x + 1 // increment variable x
+				mutex.Unlock() // membuat mutex unlock
+			}
+		}() // menjalankan anonymous function
+	}
+
+	time.Sleep(5 * time.Second) // membuat sleep sebanyak 5 detik
+	fmt.Println("Counter = ", x) // mencetak counter penjumlah variable x
+	/**
+	Output Program
+	=== RUN   TestMutex
+	Counter =  100000
+	--- PASS: TestMutex (5.00s)
+	PASS
+
+	Berarti ini aman, kita terhindar dari yang namanya race condition, materi sebelumnya outputnya tidak pasti.
+	Sedangkan menggunakan mutex outputnya sudah pasti 100000
+
+	Note:
+	Untuk kecepatan sih lebih cepat race condition akan tetapi tidak aman,
+	Sedangkan menggunakan mutex locking, maka akan lebih lama prosesnya akan tetapi lebih aman. (tapi tidak begitu lambat
+	masih hitungan nanosecond), jadi lebih baik menggunakan mutex, daripada tidak sama sekali yang akan mengakibatkan
+	race condition.
+	 */
+}
