@@ -23,7 +23,7 @@ func (account *BankAccount) AddBalance(amount int)  { // function untuk menambah
 	account.RWMutex.Unlock() // untuk proses menulis unlock
 }
 
-func (account BankAccount) GetBalance() int { // function untuk mengambil balance dengan return value int
+func (account *BankAccount) GetBalance() int { // function untuk mengambil balance dengan return value int
 	account.RWMutex.RLock() // untuk proses membaca lock
 	balance := account.Balance // untuk mengambil balance dan disimpan ke var balance
 	account.RWMutex.RUnlock() // untuk proses membaca unlock
