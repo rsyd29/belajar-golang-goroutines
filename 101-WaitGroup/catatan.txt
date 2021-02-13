@@ -1,0 +1,53 @@
+WaitGroup
+1. WaitGroup adalah fitur yang bisa digunakan untuk menunggu sebuah proses selesai dilakukan.
+Jadi ini untuk menunggu proses goroutine selesai, karena proses goroutine itu berjalan secara Asyncrounus. Sebelumnya kita
+menunggunya dengan menggunakan sleep. Itu tidak direkomendasikan sebenarnya, karena sleep kita tidak tau goroutine
+selesainya berapa lama. Sebenarnya sleep itu kita hanya menebak saja kapan goroutine itu selesai. Jadi idealnya kalau
+ingin menunggu proses goroutine lebih baik menggunakan WaitGroup.
+2. Hal ini kadang diperlukan, misal kita ingin menjalankan beberapa proses menggunakan goroutine, tapi kita ingin semua
+proses selesai terlebih dahulu sebelum aplikasi kita selesai.
+Jadi apabila ada 100 atau lebih goroutine lalu kita akan menunggu proses dari seluruh goroutine itu selesai, maka kita
+akan menggunakan WaitGroup.
+3. Kasus seperti ini bisa menggunakan WaitGroup.
+Di kasus kasus lain biasanya jarang sekali menggunakan sleep, biasanya menggunakan WaitGroup.
+4. Untuk menandai bahwa ada proses goroutine, kita bisa menggunakan method Add(int), setelah proses goroutine selesai,
+kita bisa gunakan method Done().
+Jadi Add itu untuk menambahkan, dan Done itu untuk menurunkan.
+5. Untuk menunggu semua proses selesai, kita bisa menggunakan method Wait().
+Wait itu akan menunggu dimana Done itu sesuai dengan jumlah dari Add, misal Add-nya ada 100 lalu Done-nya juga 100 maka
+Wait-nya baru berhenti.
+
+func RunAsynchronous(group *sync.WaitGroup) {
+	defer group.Done() // proses defer berguna untuk apabila ada proses yang gagal maka method Done ini akan tetap dijalankan
+
+	group.Add(1) // running 1 proses Asynchronous
+
+	// melakukan proses
+	fmt.Println("Hello")
+	time.Sleep(1 * time.Second)
+}
+
+func TestWaitGroup(t *testing.T) {
+	group := &sync.WaitGroup{}
+
+	for i := 0; i < 100; i++ {
+		go RunAsynchronous(group)
+	}
+
+	group.Wait() // ini berguna untuk menunggu semua goroutine dijalankan
+	fmt.Println("Selesai")
+}
+/**
+Note: Ketika membuat WaitGroup pastikan proses Wait tersebut harus di Done, agar tidak terjadi deadlock.
+Jadi ketika ingin menunggu proses goroutine selesai semua, daripada menggunakan sleep lebih baik menggunakan WaitGroup.
+
+outputnya
+...
+Hello
+Hello
+Hello
+Hello
+Selesai
+--- PASS: TestWaitGroup (1.00s)
+PASS
+ */
